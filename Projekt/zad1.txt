@@ -1,0 +1,324 @@
+Dokumentacja Projektowa
+
+system wspierajcy organizacj 
+komnatowych wydarze LARP
+Uczestnicy LARP fizycznie przedstawiaj POSTACIE w fikcyjnej scenerii. GRACZE przyjmuj rol POSTACI GRACZY (PC), które mog sami stworzy lub otrzyma od MISTRZÓW GRY (GM). Uczestnicy nazywani zaog, pomagaj w przygotowaniu RODOWISKA penic rol POMOCNIKÓW scenicznych, lub graj POSTACIE NIEZALENE (NPC).
+
+
+Autorzy:	Piotr Heinzelman alb.146703
+Status:	przygotowanie
+Wersja:	1.0
+Data modyfikacji:	7.I.2024
+Abstrakt:	Dokument zawiera dokumentacj metodyki, wymaga oraz projekt oprogramowania dla systemu wspierajcego organizacj komnatowych wydarze LARP
+
+
+
+Historia zmian:
+Wersja	Data	Kto	Opis
+0.1	7.01.2024	Piotr Heinzelman	Utworzenie dokumentu.
+	11.01.2024	Piotr Heinzelman	dodanie rejestru produktowego oraz scenariuszy przypadków uycia
+			
+			
+			
+			
+
+
+
+1.	Plan zada w projekcie
+1.1	Rejestr produktowy
+Sprint 1
+2.1	Zarzdzanie wydarzeniami LARP
+2.5	Tworzenie profili odgrywanych postaci, akcji, zasobów i przedmiotów oraz udostpnianie informacji o nich ich graczom.
+2.10	Zarzdzanie przebiegiem gry
+Sprint 2
+2.6	Zarzdzanie terenem gry (pomieszczeniami), w tym – definiowanie znaczenia czujników i kodów QR
+2.9	Zlecanie i rozstrzyganie efektów akcji w wiecie gry
+2.2	Zarzdzanie zapisami na wydarzenie
+Sprint 3
+2.7	Monitorowanie zasobów i przedmiotów posiadanych przez graczy.
+2.8	Interakcja z otoczeniem za pomoc kodów QR lub odpowiednich czujników.
+Sprint 4
+2.9	Zlecanie i rozstrzyganie efektów akcji w wiecie gry
+Sprint 5
+2.10	Zarzdzanie przebiegiem gry
+Sprint 6
+2.3	Obsuga patnoci
+2.4	Obsuga patnoci BRAMKA
+
+
+
+1.2 Rejestr sprintu 1
+Tabelka z zadaniami polegajcymi na realizacji przypadków uycia wybranych do sprintu
+Krótkie opisy poszczególnych zada
+
+Sprint 1
+podstawowy szkielet aplikacji
+2.1	Zarzdzanie wydarzeniami LARP
+Tworzenie nowych, edycja, zapis wydarze. Ogólny zarys interfejsu.
+2.5	Tworzenie profili odgrywanych postaci, akcji, zasobów i przedmiotów 
+oraz udostpnianie informacji o nich ich graczom.
+Przygotowanie ogólnego interfejsu tworzenia/edycji zapisu. Ogólny koncept interfejsu graficznego. Przygotowanie formatek listy i edycji postaci/akcji/zasobów i przedmiotów
+2.10	Zarzdzanie przebiegiem gry
+Wstpna wersja interfejsu edycji elementów systemu, wydarzenia, lokalizacji, postaci, zasobów i przedmiotów
+
+
+Sprint 2
+podstawowy szkielet aplikacji cz. 2
+2.6	Zarzdzanie terenem gry (pomieszczeniami), w tym – definiowanie znaczenia czujników i kodów QR
+2.9	Zlecanie i rozstrzyganie efektów akcji w wiecie gry
+2.2	Zarzdzanie zapisami na wydarzenie
+
+
+2. Opis wymaga funkcjonalnych systemu
+• Zarzdzanie wydarzeniami LARP – tworzenie wydarze ich opisów.
+• Zarzdzanie zapisami na wydarzenia LARP oraz selekcj uczestników.
+• Obsuga patnoci we wspópracy z zewntrznym systemem obsugi patnoci.
+• Tworzenie profili odgrywanych postaci, akcji, zasobów i przedmiotów oraz udostpnianie informacji o nich ich graczom.
+• Monitorowanie zasobów i przedmiotów posiadanych przez graczy.
+• Interakcja z otoczeniem za pomoc kodów QR lub odpowiednich czujników.
+• Monitorowanie obecnoci uczestników na poszczególnych obszarach gry.
+• Zarzdzanie terenem gry (pomieszczeniami), w tym – definiowanie znaczenia czujników i kodów QR.
+• Zlecanie i rozstrzyganie efektów akcji w wiecie gry.
+• Zarzdzanie przebiegiem gry, w tym – obsuga historii wydarze.
+
+gracz - osoba ze wiata realnego. 
+	<-- GUEST osoba bez przyznanej roli ( niezalogowana )
+	<-- rola UYTKOWNIK - gracz o zwykych prawach
+	<-- rola PISARZ - rola uprawiajca do zarzdzania HISTORI - czyli poszczególnymi scenariuszami rozgrywki (postacie, akcje, zasoby, przedmioty)
+	< -- rola ZARZDCA - rola uprawniajca to zarzdzania:
+	 • uprawnieniami w systemie,
+	 • LOKALIZACJAMI ( geograficzne, np: zamek Saski, Grudzidz )
+	 • WYDARZENIAMI ( czyli HISTORIA w LOKALIZACJI )
+	 • OPATAMI
+
+POSTA - byt ogólny ze wiata gry.
+	<-- PC - zwyky byt wiata gry w który wciela si GRACZ,  posiada statystyki (akcje, zasoby i pooenie w teatrze dziaa).
+	<-- NPC - byt pomocniczy np. sprzedawca - sam nie angauje si w rozgrywk, pomaga PC w grze, (posiada pooenie, zasoby i dozwolone akcje)
+	<-- GM - Mistrz gry - byt nadzorujcy i rozstrzygajcy w grze. Posiada pooenie w teatrze dziaa, dozwolone wszystkie akcje, w tym akcje specjalne.
+
+2.1 Diagramy przypadków uycia
+
+2.2 Scenariusze przypadków uycia
+PU1: Zarzdzanie wydarzeniami LARP
+{ GRACZ } 
+- zarzdzanie WYDARZENIEM ( sortowanie : wg. daty, lokalizacji, opat, iloci wolnych miejsc )
+- - - > invoke ( poka list wydarze )
+  	JELI { ZARZDCA }
+	- - - > invoke ( dodaj nowe wydarzenie ) 
+- ( wybierz wydarzenie )
+- - - > invoke ( poka informacje o wydarzeniu)
+ 	JELI { ZARZDCA lub PISARZ }
+	- - - > invoke ( edytuj informacje o wydarzeniu ) 
+	- - - > invoke ( przypisz wydarzenie do lokalizacji ) 
+	- - - > invoke ( ustal dat rozpoczcia wydarzenia ) 
+
+PU2: Zarzdzanie zapisami na wydarzenie
+{ GRACZ } 
+- zapis na WYDARZENIE ( sortowanie : - z moliwoci zapisu )
+- - - > invoke ( poka list wydarze )
+- ( wybierz wydarzenie )
+	JELI { niezalogowany }
+	- - - > invoke ( zaloguj do systemu )
+JELI { zalogowany }
+- - - > invoke ( zgo na wydarzenie jako GRACZ )
+JELI { opata !=0 &&  rola== UYTKOWNIK }
+- - - > invoke ( opa: WYDARZENIE, GRACZ, RODZAJ PATNOCI )
+
+	JELI { ZARZDCA }
+	- - - > invoke ( poka list zgoszonych uytkowników to wydarzenia ) 
+	- ( wybierz wpis )
+	- - - > invoke ( edytuj wpis : USU WPIS = wypro gracza z wydarzenia, 
+	           USU OPAT = gracz gra za darmo , PRZYZNAJ RABAT = gracz przystpuje do gry taniej )
+PU3: Obsuga patnoci
+{ UYTKOWNIK } 
+- zarzdzanie MOIMI PATNOCIAMI
+- - - > invoke ( poka list moich wydarze )
+- ( wybierz wydarzenie )
+- - - > invoke ( poka informacj o wydarzeniu )
+	JELI { STATUS PATNOCI == nieopacona }
+	- - - > invoke ( opa: WYDARZENIE, GRACZ, RODZAJ PATNOCI )
+
+PU4: Obsuga patnoci BRAMKA
+{ SYSTEM } 
+- ( opa : WYDARZENIE, GRACZ, RODZAJ PATNOCI)
+- ( wybór interfejsu patnoci : RODZAJ PATNOCI)
+- - - > invoke ( RODZAJ PATNOCI : opa ( WYDARZENIE, GRACZ ) )
+JELI { BAD PATNOCI }
+- ( zwró informacj o bdzie )
+JELI { SUCCESS } 
+- - - > invoke ( zapisz (uaktualnij ) w systemie STATUS PATNOCI )
+- ( zwró informacj o patnoci )
+- - - > invoke ( opa: WYDARZENIE, GRACZ )
+PU5: Tworzenie profili odgrywanych postaci, akcji, zasobów i przedmiotów oraz udostpnianie informacji o nich ich graczom.
+{ PISARZ , ZARZDCA } 
+- ( zarzdzanie POSTACIE, akcje, zasoby, przedmioty )
+- ( pobierz list POSTACIE, akcje, zasoby, przedmioty )
+- - - > invoke ( wybierz z listy POSTACIE, akcje, zasoby, przedmioty )
+- - - > invoke ( edytuj POSTACIE, akcje, zasoby, przedmioty )
+- - - > invoke ( zapisz POSTACIE, akcje, zasoby, przedmioty )
+
+PU6: Zarzdzanie terenem gry (pomieszczeniami), w tym – definiowanie znaczenia czujników i kodów QR
+{ PISARZ , ZARZDCA } 
+- - - > invoke ( poka list HISTORII (+filtr))
+{ SYSTEM }
+- ( poka list HISTORII (uwzgldniajc filtr ) )
+{ PISARZ , ZARZDCA } 
+- - - > invoke ( wybierz HISTORI z listy )
+{ SYSTEM }
+- ( poka informacje o HISTORII )
+{ PISARZ , ZARZDCA } 
+- - - > invoke ( dodaj nowe POMIESZCZENIE )
+{ SYSTEM }
+- ( zapisz POMIESZCZENIE do HISTORIA)
+- ( poka formatk do edycji POMIESZCZENIA )
+{ PISARZ , ZARZDCA } 
+- - - > invoke ( edytuj opis do POMIESZCZENIE )
+{ SYSTEM }
+- ( zapisz opis dla POMIESZCZENIE )
+{ PISARZ , ZARZDCA } 
+- - - > invoke ( dodaj AKCJA do POMIESZCZENIE )
+{ SYSTEM } 
+- (zapisz AKCJA do POMIESZCZENIE )
+{ PISARZ , ZARZDCA } 
+- - - > invoke ( wyszukaj z listy QR-code lub czujnik )
+{ SYSTEM }
+- ( poka list QR / czujników )
+{ PISARZ , ZARZDCA } 
+- - - > invoke ( wybierz czujnik, przypisz do AKCJA )
+- - - > invoke ( dodaj opis do AKCJA )
+- - - > invoke ( dodaj warunki i parametry do AKCJA )
+{ SYSTEM }
+- ( zapisz przypisanie czujnika do AKCJA )
+
+
+
+PU 7: Monitorowanie zasobów i przedmiotów posiadanych przez graczy.
+{ gracz } 
+- ( sprawdz stan rozgrywki )
+- - - > invoke ( moja posta )
+{ SYSTEM }
+- ( poka informacje o postaci - POOENIE, STAN OGÓLNY ) 
+- - - > invoke ( wybierz list MOJE akcje, MOJE zasoby, MOJE przedmioty, STAN WYDARZENIA)
+{ SYSTEM }
+- ( poka list akcje | zasoby | przedmioty | STAN WYDARZENIA )
+{ GRACZ }
+- - - > invoke ( wybierz z listy element akcje | zasoby | przedmioty | STAN WYDARZENIA )
+{ SYSTEM }
+- ( poka informacje o wybranym elemencie )
+{ GRACZ }
+- - - > invoke ( powró do listy )
+lub
+- - - > invoke ( powró do informacji o postaci )
+lub
+- - - >invoke ( powró do menu gównego )
+
+
+PU 8: Interakcja z otoczeniem za pomoc kodów QR lub odpowiednich czujników.
+{ CZUJNIK } -- czujnik
+- ( czujnik rejestruje obecno gracza w LOKALIZACJI )
+- - - > invoke ( wywoaj akcj SYSTEMU )
+{ SYSTEM }
+- - - > invoke ( aktualizuj pozycj GRACZa )
+- - - > invoke ( wyszukaj AKCJA dla LOKALIZACJI )
+- - - > invoke ( wykonaj AKCJA dla GRACZa )
+
+lub 
+{ GRACZ }
+- ( odczytuje kod QR - uruchamia kod przypisany do kodu QR )
+- - - > invoke ( uruchom AKCJA dla GRACZ )
+{ SYSTEM } 
+- - - > invoke ( wykonaj AKCJA dla GRACZa )
+
+PU 9: Zlecanie i rozstrzyganie efektów akcji w wiecie gry
+{ CZUJNIK : rejestruje obecno gracza w LOKALIZACJI  lub GM} 
+- ( wywoaj akcj systemu )
+{ SYSTEM }
+- ( aktualizj stan gry )
+- ( aktualizuj stan gracza )
+JELI
+potrzebna decyzja GM lub GRACZ 
+- ( poka formatk z prob o dokonanie wyboru na urzdzeniu GRACZA / GM )
+{ GM, GRACZ }
+- - - > invoke ( wybrana opcja )
+
+
+PU 10: Zarzdzanie przebiegiem gry
+{ GM, GRACZ } 
+- ( sprawdz stan gry )
+- - - > invoke ( sprawdz aktualny stan gry )
+{ SYSTEM }
+- ( wywielt aktualny stan gry dla GRACZ )
+jeli {GM}
+- ( poka list graczy )
+{ GM }
+- - - > invoke ( wybierz GRACZA / GRUPY GRACZY )
+{ SYSTEM }
+- ( poka informacje o stanie GRY oraz stanie GRACZA / GRUPY GRACZY )
+{ GM } 
+- - - > invoke { powrót do poprzedniego widoku }
+lub 
+- - - > invoke { wyjcie do menu gównego }
+
+
+
+
+ 
+3. Sownik dziedziny problemu 
+Tu wstawi diagram.
+Rysunek 3 : Diagram klas sownika dla obszaru dziedziny 1
+Itd… (kolejne diagramy)
+
+• Zarzdzanie wydarzeniami LARP – tworzenie wydarze ich opisów.
+• Zarzdzanie zapisami na wydarzenia LARP oraz selekcj uczestników.
+• Obsuga patnoci we wspópracy z zewntrznym systemem obsugi patnoci.
+• Tworzenie profili odgrywanych postaci, akcji, zasobów i przedmiotów oraz udostpnianie informacji o nich ich graczom.
+• Monitorowanie zasobów i przedmiotów posiadanych przez graczy.
+• Interakcja z otoczeniem za pomoc kodów QR lub odpowiednich czujników.
+• Monitorowanie obecnoci uczestników na poszczególnych obszarach gry.
+• Zarzdzanie terenem gry (pomieszczeniami), w tym – definiowanie znaczenia czujników i kodów QR.
+• Zlecanie i rozstrzyganie efektów akcji w wiecie gry.
+• Zarzdzanie przebiegiem gry, w tym – obsuga historii wydarze.
+
+gracz - osoba ze wiata realnego. 
+	<-- GUEST osoba bez przyznanej roli ( niezalogowana )
+	<-- rola UYTKOWNIK - gracz o zwykych prawach
+	<-- rola PISARZ - rola uprawiajca do zarzdzania HISTORI - czyli poszczególnymi scenariuszami rozgrywki (postacie, akcje, zasoby, przedmioty)
+	< -- rola ZARZDCA - rola uprawniajca to zarzdzania:
+	 • uprawnieniami w systemie,
+	 • LOKALIZACJAMI ( geograficzne, np: zamek Saski, Grudzidz )
+	 • WYDARZENIAMI ( czyli HISTORIA w LOKALIZACJI )
+	 • OPATAMI
+
+POSTA - byt ogólny ze wiata gry.
+	<-- PC - zwyky byt wiata gry w który wciela si GRACZ,  posiada statystyki (akcje, zasoby i pooenie w teatrze dziaa).
+	<-- NPC - byt pomocniczy np. sprzedawca - sam nie angauje si w rozgrywk, pomaga PC w grze, (posiada pooenie, zasoby i dozwolone akcje)
+	<-- GM - Mistrz gry - byt nadzorujcy i rozstrzygajcy w grze. Posiada pooenie w teatrze dziaa, dozwolone wszystkie akcje, w tym akcje specjalne.
+
+4. Projekt struktury systemu
+Tu wstawi diagram.
+Rysunek 4 : Diagram komponentów systemu XYZ
+
+Krótki opis diagramu…
+
+
+5. Projekt dynamiki systemu
+Tu wstawi diagram.
+Rysunek 5 : Diagram sekwencji dla realizacji przypadku uycia PU1
+Krótki opis diagramu…
+Itd… (kolejne diagramy)
+
+
+6. Struktura kodu systemu
+6.1 Realizacja interfejsów
+Tu wstawi diagram.
+Rysunek 6 : Diagram klas przedstawiajcy realizacj interfejsu I_XYZ
+Kod interfejsu I_XYZ oraz klasy go implementujcej, w jzyku programowania ABC, wygenerowany narzdziem AAA_UML. 
+Kod klasy czcionk Courier (Consolas, Lucida Console, Ubuntu Monospaced)
+Kod klasy czcionk Courier
+Kod klasy czcionk Courier
+
+
+Itd… 
+6.2 Generacja kodu
+Opis sposobu generacji kodu w narzdziu AAA_UML. Krótka instrukcja postpowania oraz przykad.
+
